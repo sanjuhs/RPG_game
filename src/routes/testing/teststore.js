@@ -1,6 +1,6 @@
-import { Writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
-export const testStore = Writable({
+export const testStore = writable({
 	the_uid: null,
 	name: null
 });
