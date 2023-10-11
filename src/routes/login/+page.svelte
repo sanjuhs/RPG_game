@@ -61,7 +61,7 @@
 						return { ...cv, loggedIn: true, uid: user.uid, currentTab: 'applanding' };
 					});
 					let status1 = await setDoc(doc(db, 'userinfo', user.uid), {
-						bio: 'Hey, lets improve ourselves with fun wagers',
+						bio: 'Having, a fun time !',
 						displayName: user.displayName,
 						email: user.email,
 						phoneNumber: user.phoneNumber,

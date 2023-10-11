@@ -297,7 +297,11 @@ so thsi is is an amazing resource to read about hyper casual gmaing
 also games like bingo blitz
 
 marvel snap gameplay - it hink this is liek a card game
-monopoly as a game is also a very cool concept - this game though is like coin master apparently , will have to see if i can make such a game as well
+monopoly as a game is also a very cool concept - this game though is like coin master apparently , will have to see if i can
+
+## actually went over coin master , am very sure it si very simial rot Monopoly
+
+make such a game as well
 https://www.youtube.com/@YEKON1/videos
 ok so i foudn this japanese guy making super viral videos liek xrazy
 ragnarok X also seems very fun in a way
@@ -315,3 +319,68 @@ tik tok made meplay it
 aslo the one belwo
 
 so the basic architecture without any backend for making the game playbale right now will be to just
+
+ok for now igore the login error we will solve it via cookies
+
+# For tomorrow:
+
+wake up by 7:00 am max preferable 6:30 ish done ready by 7:30 am
+
+### Assuming that a persistent Database will take time to build lets first just build out thebasic version without the RAG for the launch for now.
+
+~~Make data structure for storing Chat~~
+~~retrieve the last 400 messages max using firestore and store it in a IndexDB and populate it~~
+~~Finish making the openAI call from the chat -i.e server API~~
+The client JS files will be responsible for remixing the current data ( this time with pour rag) - JS file to arrange the prompt and send to API
+
+- Make simple architecture for making the prompts and Sending them across - ~~System prompt~~ - two tone architecture One for Hero stats One for Hero Inventory and One for the actual text actions
+  ~~Make random Dice function in client JS ( 26 or 20 role dice) file for it to work~~
+  ~~Wtite and test the prompts~~
+  ~~Function to Trim the history of chat within a limit~~
+  ~~add relevant context to the begining and end of chat~~
+  Experiment the final OpenAI call is sent to the Backend
+  Test the infinite scroll properly
+  https://howtomakeanrpg.com/a/how-to-make-an-rpg-stats.html
+
+<!-- Think of the data structure --> Not needed for now
+
+post the above in prod
+
+Make the figma Design for the app quickly - simple and easy
+Then quickly choose the basic visuals of the app and add them to the different screens
+Update the design of the app for desktop
+
+post the above in prod
+
+Now change up the Design of the Chat Messages and focus on the UI
+start writing media Queries for it to fit on Phone/mobile
+
+post the above in prod
+
+experiment with the markdown rendering after
+experimetn with caching the data or storing them in cookies so as to reduce calls to firestore
+
+post the above in prod
+
+plan a quick hero upgrade system and bring in heros and images from stabel DiffusinXL - not needed for now
+
+## Lets not comment anything else till the app is functioning atleast at some basic level.
+
+Yamtar Simulator Games
+https://play.google.com/store/apps/details?id=com.yamtargames.tigersim
+something like this is very very cool , comment after 3 hours lets follow the above
+
+https://www.homagames.com/games
+a new busines model her e
+HOma games aquarium
+https://play.google.com/store/apps/details?id=com.happykamp.aquariumland&hl=en_US
+very cool case study here , if only the same game could be made such that it didn't have ay ads and
+
+eat and grow category - this whole gaming thing seems to very fun as long as you have a team that knows how to build stuff and then you too can do stuff and then launch it.
+
+https://appmagic.rocks/articles/genre-classification
+fun genre classification
+Aquarium land is very similar to the alien eating game i had seen before - lots of ads and stuff as well on it
+Def need to get into Business Law for supporting Gaming
+
+ok so the electrcity went out at 5:10 pm Switching to mobile

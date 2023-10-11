@@ -2,16 +2,8 @@
 	// let me first write a large series of APIs
 	// here we are going to do CRUD functions for fire base app theoretically GET requests , POST requests ,
 	// we also put in all the imports here itself
-	import {
-		getDoc,
-		doc,
-		collection,
-		addDoc,
-		updateDoc,
-		setDoc,
-		deleteDoc,
-		getDocs
-	} from 'firebase/firestore';
+	import { getFirestore, doc, addDoc, getDoc, getDocFromCache } from 'firebase/firestore';
+	import { getDocs, updateDoc, setDoc, deleteDoc, collection } from 'firebase/firestore';
 	import { db, app } from '$lib/firebase/firebase.js';
 	import { appStore } from '$lib/components/stores.js';
 

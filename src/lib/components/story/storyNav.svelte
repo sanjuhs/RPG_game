@@ -10,6 +10,7 @@
 				<a href="/" class="remove-all-a">&nbsp Another RPG</a>
 			</div>
 			<ul class="navbar-menu">
+				<li><a href="/app/storychat" id="btndemo">Story </a></li>
 				<li><a href="/app/info" id="btndemo">Info </a></li>
 				<li><a href="/app/herostats">Herostats</a></li>
 				<li><a href="/app/gear">Gear </a></li>
@@ -20,17 +21,14 @@
 </header>
 
 <style>
-	body {
+	/* body {
 		height: 100%;
-		margin: 0; /* Remove default margin */
-		overflow-y: scroll; /* ensures scrollbar always present */
-	}
-
-	body {
+		margin: 0; 
+		overflow-y: scroll; 
 		font-family: 'Poppins', Arial, sans-serif;
 		color: #363435;
 		background-color: #f6f6f6;
-	}
+	} */
 
 	.remove-all-a {
 		text-decoration: none; /* Removes underline */

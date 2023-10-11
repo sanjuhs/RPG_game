@@ -19,17 +19,14 @@
 </header>
 
 <style>
-	body {
+	/* body {
 		height: 100%;
-		margin: 0; /* Remove default margin */
-		overflow-y: scroll; /* ensures scrollbar always present */
-	}
-
-	body {
+		margin: 0; 
+		overflow-y: scroll; 
 		font-family: 'Poppins', Arial, sans-serif;
 		color: #363435;
 		background-color: #f6f6f6;
-	}
+	} */
 
 	.remove-all-a {
 		text-decoration: none; /* Removes underline */

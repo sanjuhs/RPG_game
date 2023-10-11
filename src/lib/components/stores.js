@@ -8,4 +8,6 @@ export const appStore = writable({
 	currentTab: 'none'
 });
 
+export const hsStore = writable({});
+
 export const ccm = writable([]); // ccm = current chat messages
