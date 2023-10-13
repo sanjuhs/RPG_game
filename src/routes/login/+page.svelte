@@ -7,6 +7,7 @@
 
 	import { getFirestore, doc, setDoc, getDoc } from 'firebase/firestore';
 	import Cookies from 'js-cookie';
+	import backgroundimg from '$lib/images/site/market.png';
 
 	onMount(async () => {
 		onAuthStateChanged(auth, async (currentUser) => {
@@ -70,7 +71,77 @@
 	};
 </script>
 
-<h1>Login now</h1>
-<p>Demo if the app</p>
-<button on:click={googleSignIn}>Click here to login Via google</button>
-<p>we use google to verify only</p>
+<div class="login-container">
+	<img class="background-image" src={backgroundimg} alt="Background" />
+
+	<div class="login-card centered">
+		<h1>Login now</h1>
+		<p>Please remember this is just a prototype of the app.</p>
+		<button on:click={googleSignIn}>Click here to login Via google</button>
+		<p>we use google to verify as it is easier :)</p>
+	</div>
+</div>
+
+<!-- Background images is  <img src={backgroundimg} />-->
+
+<style>
+	.login-container {
+		position: relative;
+		height: 100vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		overflow: hidden;
+	}
+
+	.background-image {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+		filter: opacity(0.7);
+		z-index: -1;
+	}
+
+	.centered {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+
+	.login-card {
+		background-color: rgba(255, 255, 255, 0.8);
+		padding: 20px 30px;
+		border-radius: 8px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		text-align: center;
+		width: 300px;
+	}
+
+	.login-card h1 {
+		font-size: 2em;
+		margin-bottom: 15px;
+	}
+
+	.login-card p {
+		margin-bottom: 15px;
+	}
+
+	.login-card button {
+		background-color: #007bff;
+		color: #fff;
+		border: none;
+		border-radius: 4px;
+		padding: 10px 20px;
+		cursor: pointer;
+		font-size: 1em;
+		transition: background-color 0.3s;
+	}
+
+	.login-card button:hover {
+		background-color: #0056b3;
+	}
+</style>
