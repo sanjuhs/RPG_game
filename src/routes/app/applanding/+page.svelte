@@ -59,14 +59,8 @@
 <LandingNavBar />
 <div class="center-it">
 	<h1>Welcome to Another RPG</h1>
-	<button on:click={googleSignOut}>Log out</button>
-</div>
-<div class="content">
-	<p>
-		This is a quick RPG Game that I had made so please try it out and tell me what you think off it
-		, please drop any suggestions on any of the given social media posts/ forums that may have
-		brought you here! thank you !
-	</p>
+	<p>Click below on the Picture to get started</p>
+	<button on:click={googleSignOut} class="logout">Log out</button>
 </div>
 <div class="carousel rpg-card">
 	<h3>Choose different worlds:</h3>
@@ -80,6 +74,13 @@
 		<p class="small">(also called just another RPG)</p>
 		<p>the main world / the first one made just like a typical RPG</p>
 	</button>
+</div>
+<div class="content">
+	<p>
+		This is a quick RPG Game that I had made so please try it out and tell me what you think off it
+		, please drop any suggestions on any of the given social media posts/ forums that may have
+		brought you here! thank you !
+	</p>
 </div>
 
 <!-- <button>
@@ -174,5 +175,19 @@ body {
 		font-size: 0.8em;
 		margin: 0;
 		padding: 0;
+	}
+
+	.logout {
+		background-color: #007bff;
+		color: #fff;
+		border: none;
+		border-radius: 4px;
+		padding: 10px 20px;
+		cursor: pointer;
+		font-size: 1em;
+		transition: background-color 0.3s;
+	}
+	.logout:hover {
+		background-color: #0056b3;
 	}
 </style>

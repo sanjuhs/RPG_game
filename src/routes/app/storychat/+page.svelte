@@ -11,7 +11,7 @@
 	import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
 	import { app, auth, db, storage } from '$lib/components/firebase.js';
 
-	import ChatMessage from '$lib/components/story/ChatMessage.svelte';
+	import ChatMessage from '$lib/components/story/chatmessage.svelte';
 
 	import {
 		example_stats_json,
