@@ -26,7 +26,6 @@
 					console.log('first set ', $appStore.uid, $appStore.loggedIn, $appStore.currentWorld);
 
 					//if hsStore is not existent reload hsStore from World Snap here
-					// then await this
 					let worldID = $appStore.currentWorld;
 					let userID = $appStore.uid;
 					if (!$hsStore) {

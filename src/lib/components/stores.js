@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 export const appStore = writable({
 	loggedIn: false,
 	uid: null,
-	currentWorld: 'none',
+	currentWorld: 'world1',
 	currentHero: 'none',
 	currentTab: 'none'
 });
