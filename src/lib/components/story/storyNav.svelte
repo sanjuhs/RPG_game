@@ -11,10 +11,9 @@
 			</div>
 			<ul class="navbar-menu">
 				<li><a href="/app/storychat" id="btndemo">Story </a></li>
-				<li><a href="/app/info" id="btndemo">Info </a></li>
+				<li><a href="/app/info" id="btndemo">World-Info </a></li>
 				<li><a href="/app/herostats">Herostats</a></li>
-				<li><a href="/app/gear">Gear </a></li>
-				<li><a href="/app/inventory" id="btndemo">Inventory </a></li>
+				<!-- <li><a href="/app/inventory" id="btndemo">Gear & Inventory </a></li> -->
 			</ul>
 		</nav>
 	</div>

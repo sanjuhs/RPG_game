@@ -1,104 +1,70 @@
 <script>
-	import { appStore, hsStore } from '$lib/components/stores.js';
-	import { onMount } from 'svelte';
-	import StoryNav from '../../../lib/components/story/storyNav.svelte';
-	import { goto } from '$app/navigation';
+	import StoryNav from '$lib/components/story/storyNav.svelte';
 	import { marked } from 'marked';
-	import { db } from '$lib/components/firebase.js';
 	import { getFirestore, doc, addDoc, getDoc, getDocFromCache } from 'firebase/firestore';
 	import { getDocs, updateDoc, setDoc, deleteDoc, collection } from 'firebase/firestore';
 	import { query, orderBy, limit, startAfter } from 'firebase/firestore';
 
+	import { appStore, hsStore } from '$lib/components/stores.js';
+	import { onMount, afterUpdate } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
+	import { app, auth, db, storage } from '$lib/components/firebase.js';
+
+	import ChatMessage from '$lib/components/story/ChatMessage.svelte';
+
+	import {
+		example_stats_json,
+		eiralia_worldData,
+		eiralia_starter,
+		hero_stat_builder_system_prompt,
+		hero_stat_builder_user_prompt,
+		storybuilder_prompt,
+		diceroll_rules
+	} from './prompts.js';
+
 	// world 1 data will have to be loaded from the JSON file that is stored inside
-	// here we will also have to cahce the details we get from the front end
-	// hsStore is the JSON file that will save all the stats of the hero in JSOn format as well as the levels
-	// it is used to keep track of everything
+	// hs store will keeptrack of the heros journey
 
 	let messages = [];
 	let worldID = $appStore.currentWorld;
 	let userID = $appStore.uid;
 	let heroID = $appStore.currentHero;
 	let loading = false;
+	let quickStats;
 
-	const example_stats_json = `
-    { 
-	worldinfo: { fact1:"something" , ...other_facts} , 
-	characters: { 
-		hero:{ 
-			name:"Drufen",
-			level:1,
-			XP: 250,
-			xp_points_to_next_level: 3500,
-			class:{
-				type:"Swift Hunter",
-				class_bonus:{
-					Hit_Points:{
-						comment:" additonal 10",
-						change: 10,
-					},
-					strength:{
-						comment:"reduced by 25 as swift-hunter",
-						change:-25,
-					},
-					dextirity:{
-						comment:"multiplied by 2 as swift-hunter", 
-						change: 45,
-					},
-					...other_stats
-				},
-				skills:{
-					cooking:5,
-					running:15,
-					...other_skills
-				}
-			},
-			stats: { 
-				Hit_Points:345, strength:17, dextirity:45 , ...other_stats , 
-			},
-			Inventory:{
-				item: no_of_items,
-				Mystical_Elf_Arrow:5,
-				Letter_from_the_King:1,
-			},
-			status_effects:{
-				energy_bar:{
-					turns:2,
-					change:{
-						Hit_Points: 3
-					}
-				}
-			}
-		},
-		party_member_1:{
-			name:"Lireal",
-			level:1,
-			XP: 250,
-			xp_points_to_next_level: 3500,
-			class:{
-		},
-		enemies:{
-			name:"WildBoar" ,
-			level: 15,
-			class:{
-				type:"boss_animal",
-			},
-			stats:{
-				Hit_Points:450, strength:21, dextirity:3 , ...other_stats
-			},
-			status_effects:{
-				..
-			}
-		},
-		} 
+	let lastMessageElement;
+	function handleLastMessageUpdate(event) {
+		lastMessageElement = event.detail;
 	}
-} 
-    `;
+	afterUpdate(() => {
+		if (lastMessageElement) {
+			lastMessageElement.scrollIntoView({ behavior: 'smooth' });
+		}
+	});
 
 	onMount(async () => {
+		const authChanged = new Promise((resolve) => {
+			onAuthStateChanged(auth, async (currentUser) => {
+				if (currentUser) {
+					appStore.update((cv) => {
+						return { ...cv, loggedIn: true, uid: currentUser.uid };
+					});
+					console.log($appStore.uid, $appStore.loggedIn);
+					resolve();
+				} else {
+					appStore.update((cv) => {
+						return { ...cv, loggedIn: false, uid: null };
+					});
+					resolve();
+				}
+			});
+		});
+
+		await authChanged;
 		console.log('The uid is ', $appStore.uid);
-		if (!$appStore.uid) {
-			goto('/');
-		}
+		worldID = $appStore.currentWorld;
+		userID = $appStore.uid;
 
 		// ^^^^^^^^^^^^  Retrieve messages: ^^^^^^^^^^^^
 
@@ -106,46 +72,29 @@
 		const worldSnap = await getDoc(worldDocref);
 
 		if (worldSnap.exists()) {
+			console.log('world Snap exists');
 			let mess = await getPaginatedMessages(userID, worldID);
 			messages = mess;
 			messages = messages;
 			console.log(mess);
 			// also retrieve the hero stats if they exist in this step
 			hsStore.set(worldSnap.data());
+			quickStats = await $hsStore;
 			console.log('hsStore is ', $hsStore);
 		} else {
-			// add an exsits variable
-			await setDoc(worldDocref, { exists: true });
-			console.log(`Updated exists with id exists under worldDocref`);
+			// // add an exsits variable
+			// await setDoc(worldDocref, { exists: true });
+			// console.log(`worldDocref`);
 
 			// create the initial messages
 			let messageData1 = {
-				text: `In the mystical realm of Eiralia, where magical forests blend seamlessly into towering mountain ranges, lies a secluded elven village known as StrafenFallVilage. 
-                Nestled at the base of the Whispering Waterfalls, this druidic haven is a sanctuary for all things natural. 
-                The community is led by High Druid Elira Moonshade, a wise elf who has lived for centuries and has a deep connection with the forest spirits. StrafenFallVilage is renowned for its enchanted gardens, where flora and fauna coexist in magical harmony.
-                `,
+				text: eiralia_worldData,
 				sender: 'bot',
 				character: 'na',
 				timestamp: Date.now() - 2000
 			};
 			let messageData2 = {
-				text: `
-                Today, the village is abuzz with excitement; the annual Festival of the Emerald Leaves is about to commence. This festival celebrates the onset of autumn and is a time when druids from neighboring regions gather to exchange knowledge and partake in ancient rituals.
-
-**Amidst the backdrop of the Festival of the Emerald Leaves in StrafenFallVilage, a new figure walks into the elven enclave...**
-
-You play as Drufen, a skilled human hunter, who steps through the mystical barriers, that shield the village from the outside world. Though the festival is a spectacle to behold, Drufen has little time for celebration. He's on a mission to find the best rum for King Miradas, a monarch from a neighboring human kingdom, and to deliver a concealed message to High Druid Elira Moonshade.
-
-### Drufen's Entry ,
-
-As Drufen enters the village, he's immediately captivated by its ethereal beauty. The moonlight dances on the surface of the Whispering Waterfalls, and magical lanterns float through the air, illuminating the ancient trees. But Drufen is a man of focus; he shakes off the allure of the surroundings and proceeds toward the village square, where a grand market is set up for the festival.
-Stalls are abundant with exotic herbs, magical artifacts, and enchanted clothing. However, his eyes are set on a particular tent at the far end, adorned with various bottles and casks—this must be where the famed elven rum is sold.
-
-### The Rum and the Message ..!
-
-Finding the rum is only half the battle. Drufen also bears a sealed letter from King Miradas, a message meant for the eyes of High Druid Elira Moonshade. The contents of the message are unknown to him, but the wax seal of the king's sigil suggests its importance.
-
-                `,
+				text: eiralia_starter,
 				sender: 'bot',
 				character: 'na',
 				timestamp: Date.now()
@@ -163,15 +112,8 @@ Finding the rum is only half the battle. Drufen also bears a sealed letter from 
 			console.log(' the 2nd doc id is ', docRef2.id);
 
 			let statmessages = [];
-			let system_prompt2 = `You are an expert RPG dungeon master BOT who updates the stats of hero and the world around him. You store relevant information from the world in JSON format 
-            and display important information such as stats and Inventory of the hero in the form of JSON. You usually structure your information in the schema of 
-            ${example_stats_json} 
-            remember you do not need to add party members unless they explicitly join you. SImilarly you do not need to add the enemy unless its in combat. 
-            In case the enemy escapes or retrests or its HP goes to Zero the enemy will stay in combat. You do not need to take facts needless unless it is directly related to the quests or setting of the world.
-            Please Reply only in JSON.
-            `;
-
-			let user_prompt2 = `looking at the above begining of the story , please generate the hero stats for our hero Drufen. Also update the Inventory  Please Reply only in JSON.`;
+			let system_prompt2 = hero_stat_builder_system_prompt;
+			let user_prompt2 = hero_stat_builder_user_prompt;
 			statmessages.push({ role: 'system', content: system_prompt2 });
 			statmessages.push({ role: 'user', content: messageData1['text'] });
 			statmessages.push({ role: 'user', content: messageData2['text'] });
@@ -181,7 +123,8 @@ Finding the rum is only half the battle. Drufen also bears a sealed letter from 
 			console.log(result_stats);
 			hsStore.set(result_stats);
 			console.log($hsStore);
-			await updateDoc(worldDocref, JSON.parse(result_stats));
+			const worldDocref2 = doc(db, 'allMessages', userID, 'worlds', worldID);
+			await setDoc(worldDocref2, JSON.parse(result_stats), { merge: true });
 			console.log('updated Hero stats');
 			return docRef2.id;
 		}
@@ -203,7 +146,7 @@ Finding the rum is only half the battle. Drufen also bears a sealed letter from 
 
 	let chatContainer;
 
-	onMount(() => {
+	onMount(async () => {
 		const handleScroll = async () => {
 			if (chatContainer.scrollTop === 0) {
 				// User has scrolled to the top
@@ -235,51 +178,126 @@ Finding the rum is only half the battle. Drufen also bears a sealed letter from 
 		loading = true;
 		console.log('in send message');
 		if (inputText.trim() !== '') {
+			const worldDocref3 = doc(db, 'allMessages', userID, 'worlds', worldID);
+			const messagesRef3 = collection(
+				doc(db, 'allMessages', userID, 'worlds', worldID),
+				'messages'
+			);
 			const new_message = { sender: 'user', text: inputText.trim(), character: 'Drufen_w1' };
 			messages.push(new_message);
 			let diceNo = rollDice(20);
 			console.log('rolling Dice of 20 , dice number is = ', diceNo);
 			messages.push({ sender: 'dice', text: `dice roll -${diceNo}`, character: 'dice20' });
+			messages = messages;
+			let mdata1 = {
+				text: inputText.trim(),
+				sender: 'user',
+				character: 'na',
+				timestamp: Date.now()
+			};
+			let mdata2 = {
+				text: `dice roll -${diceNo}`,
+				sender: 'dice',
+				character: 'na',
+				timestamp: Date.now()
+			};
+			const mdataref1 = await addDoc(messagesRef3, mdata1);
+			const mdataref2 = await addDoc(messagesRef3, mdata2);
+
+			inputText = '';
 
 			let messages_for_story = [],
 				messages_for_stats = [];
 
-			let system_prompt1 =
-				'You are an expert RPG dungeon master and will help me build a story along the way as we go back and forth';
-			let world_description =
-				'This is the mystical other worldly realm of Eiralia, where magical forests blend seamlessly into towering mountain ranges, where all is accepted from magic to might, from a variety of races from elves to orcs to humans , to many more.';
+			let system_prompt1 = storybuilder_prompt;
+			let world_description = eiralia_worldData;
 
 			let chat_history = transformMessagesForStory(messages, userID);
 			messages_for_story.push({ role: 'system', content: system_prompt1 });
 			messages_for_story.push({ role: 'assistant', content: world_description });
 			messages_for_story.push({
 				role: 'user',
-				content: ` 
-A dice roll of 20 is apart of the game and happens whenever any action is taken. I will add the dice roll below my action every-time. Make sure to alter the outcomes of the actions based on the roll.
-A dice roll of 1- 20 , where a roll of 14 is neutral , roll of 7 or lower is bad , and roll of 2-3 or lower is very very bad and can hurt badly / create a disaster /boost enemy is diaadvantageous etc  depending on the action taken. Whereas a roll of 17 is good and roll of 18 and above is considered amazing and can actually lead to some amzing outcomes/ miracle level.
-                So we are starting from this part of the story
-                `
+				content:
+					diceroll_rules +
+					` So we are starting from this part of the story. you may give options as well , also describe the continuation of the story in depth as an rpg dungeon master. PLease Wait for me to roll the dice myself.`
 			});
 			messages_for_story.push(...chat_history);
 
 			console.log(messages_for_story);
 			let storyresult = await openAIgenComp(messages_for_story);
 			messages.push({ sender: 'bot', text: storyresult, character: 'na' });
+			messages = messages;
+
+			const heroStats_system_prompt_herostats = `You are a RPG (role playing game) JSON updater that needs to update the state of the game based on the given action information. your reply will include the updating JSON. So that it can be parsed and merged with the current JSON shown.`;
+			const heroStats_userprompt = `The information given below is the current Stats of hero and the status of the world.
+            Based on the Story till now and Actions described below give me the update JSON. Update the Inventory, Skills as well.
+            As skill points increase they can help to improve calss , skills points are capped at 1000.
+            make sure to keep increasing XP for every action while reducing xp_to_next_level , so i can level up.
+            Also change the hp and the other stats as well for every action.
+            Give only the needed updates to the JSON wrapped in 3 quotation marks ''' and do not repeat the whoel JOSN, just the updates.
+            `;
+
+			if (!$hsStore) {
+				const worldSnap4 = await getDoc(worldDocref3);
+				hsStore.set(worldSnap4.data());
+			}
+			messages_for_stats.push({ role: 'system', content: heroStats_system_prompt_herostats });
+			messages_for_stats.push({ role: 'user', content: heroStats_userprompt });
+			messages_for_stats.push({ role: 'user', content: JSON.stringify($hsStore) });
+			messages_for_stats.push({
+				role: 'user',
+				content:
+					`Story till now:\n\n` +
+					inputText.trim() +
+					'\n\n' +
+					`dice roll -${diceNo}\n\n` +
+					`Action taken \n\n` +
+					storyresult
+			});
+			messages_for_stats.push({
+				role: 'user',
+				content: `Give me the updated JSON , wrapped in 3 quotation marks '''  and then give a breif paragraph of the changes you have made to the JSON. Also make sure to give the result in only a Single JSON with similar schema as before.`
+			});
 
 			// check if there exist any stats/ json for the User if not then
 			// things needed include latest message of the human + dice roll + AI reply
 			//based on which decide to update the stats or add the stats
 
-			// let herostatsresult = openAIgenComp(messages_for_stats);
+			let herostatsresult = await openAIgenComp(messages_for_stats);
+			// console.log(herostatsresult);
+			let updateInfo = separateJSONAndReasoning(herostatsresult);
+			console.log(
+				'upJSon is ',
+				updateInfo['updateJSON'],
+				'\n\n reason mess is ',
+				updateInfo['reasoning']
+			);
 
-			// Here you can also add logic to get a response from ChatGPT or any other backend
-			// when a message is sent -- add it to the local messages array
-			// then also add the same to firestore Messages DB
-			// then call OpenAI API
-			// then add that to local messages DB and then
+			messages.push({ sender: 'reason', text: updateInfo['reasoning'], character: 'na' });
+			let update_json_data = JSON.parse(updateInfo['updateJSON']);
+			await setDoc(worldDocref3, update_json_data, { merge: true });
+
+			let mdata3 = {
+				text: storyresult,
+				sender: 'bot',
+				character: 'na',
+				timestamp: Date.now()
+			};
+			let mdata4 = {
+				text: updateInfo['reasoning'],
+				sender: 'reason',
+				character: 'na',
+				timestamp: Date.now()
+			};
+
+			const mdataref3 = await addDoc(messagesRef3, mdata3);
+			const mdataref4 = await addDoc(messagesRef3, mdata4);
+
+			hsStore.update((cv) => {
+				return { ...cv, ...update_json_data };
+			});
 			// then update the firestore
 
-			inputText = '';
 			messages = messages;
 		}
 		loading = false;
@@ -287,13 +305,15 @@ A dice roll of 1- 20 , where a roll of 14 is neutral , roll of 7 or lower is bad
 
 	function transformMessagesForStory(messages, userUID, word_limit = 2200) {
 		// Map the messages to the desired format
-		let messagesForStory = messages.map((msg) => ({
-			role:
-				msg.sender === userUID || msg.sender === 'user' || msg.sender === 'dice'
-					? 'user'
-					: 'assistant',
-			content: msg.text
-		}));
+		let messagesForStory = messages
+			.filter((msg) => msg.sender !== 'reason')
+			.map((msg) => ({
+				role:
+					msg.sender === userUID || msg.sender === 'user' || msg.sender === 'dice'
+						? 'user'
+						: 'assistant',
+				content: msg.text
+			}));
 
 		// Calculate the total word count
 		let totalWords = messagesForStory.reduce((acc, msg) => acc + msg.content.split(' ').length, 0);
@@ -322,23 +342,40 @@ A dice roll of 1- 20 , where a roll of 14 is neutral , roll of 7 or lower is bad
 	function rollDice(sides = 6) {
 		return Math.floor(Math.random() * sides) + 1;
 	}
+
+	function separateJSONAndReasoning(str) {
+		const parts = str.split("'''");
+
+		const updateJSON = parts[1].trim(); // Take the second part which is the JSON string
+		const reasoning = parts[2].trim(); // Take the third part which is the reasoning
+
+		return {
+			updateJSON,
+			reasoning
+		};
+	}
 </script>
 
 <!-- Essential stats & contextual data & chat HIstory for generating the next state of the game-->
 <StoryNav />
 <div class="chat-container" bind:this={chatContainer}>
-	<div class="chat-header">World of Elaria story of Drufen</div>
+	<div class="chat-header">
+		World of Elaria story of Drufen &nbsp;
+		<!-- <button on:click={alert(JSON.stringify(quickStats))}>Quick stats</button> -->
+	</div>
 	<div class="chat-messages">
 		{#each messages as message}
-			<div class="chat-message {message.sender}">
-				{@html marked(String(message.text))}
-			</div>
+			<ChatMessage {message} on:updateLastMessage={handleLastMessageUpdate} />
 		{/each}
 	</div>
 </div>
 <div class="chat-input-container sticky">
 	<input bind:value={inputText} on:keydown={handleKeydown} placeholder="Type your message..." />
-	<button on:click={sendMessage}>Send</button>
+	{#if loading}
+		<button disabled>Loading ...</button>
+	{:else}
+		<button on:click={sendMessage}>Send</button>
+	{/if}
 </div>
 
 <style>
@@ -365,26 +402,6 @@ A dice roll of 1- 20 , where a roll of 14 is neutral , roll of 7 or lower is bad
 		flex: 1;
 		padding: 10px;
 		overflow-y: auto;
-	}
-
-	.chat-message {
-		padding: 8px 10px;
-		margin: 5px 0;
-		border-radius: 5px;
-		max-width: 80%;
-	}
-
-	.chat-message.user {
-		background-color: #e6f7ff;
-		align-self: flex-end;
-	}
-
-	.chat-message.bot {
-		background-color: #e6ffe6;
-	}
-
-	.chat-message.dice {
-		background-color: #fce3ce;
 	}
 
 	.chat-input-container {
@@ -423,5 +440,9 @@ A dice roll of 1- 20 , where a roll of 14 is neutral , roll of 7 or lower is bad
 		margin-left: auto;
 		margin-right: auto;
 		border-color: rgb(137, 137, 137);
+	}
+
+	button:disabled {
+		background-color: #bdbdbd;
 	}
 </style>

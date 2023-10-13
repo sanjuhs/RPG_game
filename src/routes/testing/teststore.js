@@ -77,3 +77,26 @@ export const testStore = writable({
 // 		}
 // 	}
 // }
+
+// let test_json =
+// {"characters":
+// 	{"hero":
+// 		{"XP":60,
+// 		"xp_points_to_next_level":40,
+// 		"stats":{"Hit_Points":140},
+// 		"Inventory":
+// 			{"Ice_Coconut":0,"Letter_from_the_King":1,"Mystical_Elf_Arrow":0,"Elven_Bow":1,"Gold_Coins":100},
+// 		"class":
+// 			{"class_bonus":
+// 				{"Hit_Points":
+// 					{"change":10,"comment":"additional 10"}
+// 				}
+// 			}
+// 		}
+// 	}
+// }
+
+// let testJSon2 = {"active_quests":
+// 	{"quest1":{"quest_name":"The Source of Corruption","quest_status":"In Progress","quest_progress":0,"quest_description":"Find and eradicate the source of corruption in the mystic woods."}}}
+
+// let testJSON3= {"characters":{"hero":{"Inventory":{"Ice_Coconut":0,"Letter_from_the_King":1,"Mystical_Elf_Arrow":0,"Elven_Bow":1,"Gold_Coins":100,"Mystic_Map_of_Eiralia":1}}}}

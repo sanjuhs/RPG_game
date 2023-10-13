@@ -322,50 +322,6 @@ so the basic architecture without any backend for making the game playbale right
 
 ok for now igore the login error we will solve it via cookies
 
-# For tomorrow:
-
-wake up by 7:00 am max preferable 6:30 ish done ready by 7:30 am
-
-### Assuming that a persistent Database will take time to build lets first just build out thebasic version without the RAG for the launch for now.
-
-~~Make data structure for storing Chat~~
-~~retrieve the last 400 messages max using firestore and store it in a IndexDB and populate it~~
-~~Finish making the openAI call from the chat -i.e server API~~
-The client JS files will be responsible for remixing the current data ( this time with pour rag) - JS file to arrange the prompt and send to API
-
-- Make simple architecture for making the prompts and Sending them across - ~~System prompt~~ - two tone architecture One for Hero stats One for Hero Inventory and One for the actual text actions
-  ~~Make random Dice function in client JS ( 26 or 20 role dice) file for it to work~~
-  ~~Wtite and test the prompts~~
-  ~~Function to Trim the history of chat within a limit~~
-  ~~add relevant context to the begining and end of chat~~
-  Experiment the final OpenAI call is sent to the Backend
-  Test the infinite scroll properly
-  https://howtomakeanrpg.com/a/how-to-make-an-rpg-stats.html
-
-<!-- Think of the data structure --> Not needed for now
-
-post the above in prod
-
-Make the figma Design for the app quickly - simple and easy
-Then quickly choose the basic visuals of the app and add them to the different screens
-Update the design of the app for desktop
-
-post the above in prod
-
-Now change up the Design of the Chat Messages and focus on the UI
-start writing media Queries for it to fit on Phone/mobile
-
-post the above in prod
-
-experiment with the markdown rendering after
-experimetn with caching the data or storing them in cookies so as to reduce calls to firestore
-
-post the above in prod
-
-plan a quick hero upgrade system and bring in heros and images from stabel DiffusinXL - not needed for now
-
-## Lets not comment anything else till the app is functioning atleast at some basic level.
-
 Yamtar Simulator Games
 https://play.google.com/store/apps/details?id=com.yamtargames.tigersim
 something like this is very very cool , comment after 3 hours lets follow the above
@@ -384,3 +340,206 @@ Aquarium land is very similar to the alien eating game i had seen before - lots 
 Def need to get into Business Law for supporting Gaming
 
 ok so the electrcity went out at 5:10 pm Switching to mobile
+
+~~check if its cheaper to run llama2 for 1000 users ~~
+https://news.ycombinator.com/item?id=37484135
+So as usual i can only think of this in two ways , basically the game has to get so good that the people using it really really reallly like it and then sell to openAI and the Caveat is that we use Only OpenAI to do all this and that we probably copy the pricing strtaegies of others.
+https://theaiunderwriter.substack.com/p/well-call-it-ai-to-sell-it-machine
+so basically even mistral 7B can be used as a drop nin repalcement for the whole thing
+
+https://blog.databoutique.com/p/web-data-is-a-commodity-and-needs
+some how this blog about webdat is very intriguing
+
+if this game does not work after putting it into Prod then i will just.
+the other eay to look at it , is to just make a complete story telling game of sorts such that it just works out of the box. Text base dmanipulation in games will really be cool.
+
+https://a16z.com/what-builders-talk-about-when-they-talk-about-ai/
+
+ok wayy to distracted today still things not going exactly to plan yet
+So the IDea is to build the whole wrapper as an app and use it as an experience to be able to actually build out a fun useful pristine product that people would be ready to pay for and be ready to use for their enterntainment. Remember , no VC till you can generate a postive cash flow yourself that too quickly.
+what are teh best use cases of small LLMs
+Can we use smaller large language models and use them for some speciic purpose for example for
+
+man its almost 4 pm , okso the thought process is that i want to get somem VC money and so many other things , but i also want to make these games and be a story teller etc so i am thinking that instead of just reading news and browsing , why dont i Build whatever I have in my mind as quickly as possible
+
+20usd / 0.002
+10 million token , each interaction is like above a 1000 tokens ... so around 10,00 responses I guess ?
+maybe i can build it so that i can make the whole app more efficient
+Basically give chatGPT a simpel code interpreter with which it can compute the stats of the charaters
+and EVnetually make the game sorta similar to
+ok no more thinking just doing
+Just do the things out of thebox as soon as possible dont be scared just do it
+
+ok one of 3 things can happen once you release the app on multiple platforms:
+
+1. no noise nothing , noody notices a thing -- means get back to work to make the app work for you ( easy / good )
+2. some people use it / get maybe some suggestions/comments or feature requets etc ? ( not as easy /also ok )
+3. Becomes super popular too many people / hot enough people or bots that my GPT limit gets used up
+
+ALso need to buy the Domain name tomorrow to make it live
+Ahh i know we can use smll language models in ReAct to basically use tools or be the master AI to decide the main stuff ?
+
+I can decide to go the OpenSoruce route If i want to or I can just keep it closed Source and see how it goes
+
+ok so whats Janitor AI
+Ok so wait you put yur OpneAI key into it and then it works
+SO i am thinking just for the sake that i can make money I should just build out a simple ersion of it and launch it with a subscription of 25 usd , use if you want , eave if you dont , either ways it was built so that i could just explore the capabilities of the AI.
+
+is janitorAI on githib ?
+https://www.youtube.com/watch?v=pHhjg2JwdPI
+![Alt text](arrangeobjs.png)
+https://github.com/w-okada/voice-changer
+
+very cool real time voice chnager
+
+ok so the first thing i should even be doing is to gather enough money from this project to buy / build a PC that can create Stable Diffusion based Images basically I need it to continuouslly churn out images in a stream.
+basically make neough money to buy enough graphics cards for Stable Diffusion. Until then keep building up your app and community slowly but surely.
+
+ok so on the other side the thought also is that the more i produce , the more I will have curate , because not all images can go into the Game. And each image may or may not gove me different ideas of what is good and what is bad .
+So the policy should instead be Unless I specifically have / want to build the something that scales i should not yet touch it.
+
+https://www.hp.com/in-en/shop/desktops/omen-40l-desktop-gt21-1109in-pc-7j2m2pa.html?facetref=07fb383470cdb488#product.tab.offer
+yeah i want this i think , need to earn 2.5 lakh which is 70,000 rs = 1000 usd , ~ 4000 usd ~ 2.8 Lakh
+Means 4000 /
+Its going to be very interesting if people bite this
+https://www.youtube.com/watch?v=cRZr9Oc4NQY - My $4000 Gaming PC Build is a BEAST
+
+ok so did a quick Design of how the Ui should look like and its very different from what i had thought of actually
+
+displa
+
+# For tomorrow:
+
+wake up by 7:00 am max preferable 6:30 ish done ready by 7:30 am
+
+### Assuming that a persistent Database will take time to build lets first just build out thebasic version without the RAG for the launch for now.
+
+~~Make data structure for storing Chat~~
+~~retrieve the last 400 messages max using firestore and store it in a IndexDB and populate it~~
+~~Finish making the openAI call from the chat -i.e server API~~
+~~The client JS files will be responsible for remixing the current data ( this time with pour rag) - JS file to arrange the prompt and send to API~~
+
+- ~~Make simple architecture for making the prompts and Sending them across~~
+  - ~~System prompt - two tone architecture One for Hero stats One for Hero Inventory and One for the actual text actions~~
+    ~~Make random Dice function in client JS ( 26 or 20 role dice) file for it to work~~
+    ~~Wtite and test the prompts~~
+    ~~Function to Trim the history of chat within a limit~~
+    ~~add relevant context to the begining and end of chat~~
+    ~~Experiment the final OpenAI call is sent to the Backend~~
+    https://howtomakeanrpg.com/a/how-to-make-an-rpg-stats.html
+
+<!-- Think of the data structure --> Not needed for now
+
+~~post the above in prod~~
+
+~~Use auth to save state of the login app ( have to solve the login problem)~~
+~~finsih it by adding it to all the effected files.~~
+~~Check the Logout function as well on the app landing after~~
+~~add quick stats button to the top- An easeier way to view hero stats~~
+~~Off load all prompt-Content neatly into a prompts.js file~~
+~~make sure that the chat container scrolls down when a new message is added~~
+~~Loading state on storychat after sending message~~
+~~do quick Design of the hero stats page and the rest~~
+~~For now before implementing the final design, just put the herostats as a list ? - yes lets do that first~~
+~~If its an object then dont print it ~~
+~~put all character properties under 1 , world properties under 1~~
+~~Clean char stats page.~~
+~~Check why Worlddata is being replicated? - think its solved for now~~
+~~delete the inventory/gear page for now~~
+~~herostats Change prompts based on what has happend~~
+~~Change title to Another RPG- an AI rpg storbuilder and Game~~
+~~change the place from where the world data is populated or remove it on story chat~~
+
+1. ~~update the dependedt reload variables from authState changed so on reload everyhting works as needed~~ - ~~done for sotry Chat ~~ - ~~done for herostats~~ - ~~done for info ~~
+   ~~Finsih worldInfo page~~
+
+Update the Inventory, herostats and the whole JSON after every roll
+Save the messages that are generated by the AI
+put a large HP bar on Story Nav center
+Prettifying the whole app is the last thing to do , jsut before relase.
+
+post the above in prod and release it
+
+Use Descript or Veed io or loom for the Video demo, be quick
+
+post the above in Social media channels and release it
+
+---
+
+Then quickly choose the basic visuals of the app and add them to the different screens
+Update the design of the app for desktop
+experiment with caching the data or storing them in cookies so as to reduce calls to firestore for new messages
+
+post the above in prod
+
+Test the infinite scroll properly
+~~Make the figma Design for the app quickly - simple and easy~~
+
+Stuff for next week's launch
+
+Hero stats should actually be nested inside the Story folder
+The other thing is we shoud implement cookie for hero stats as wehn there is a cmplete relaod of the page ,we need persisitence from the store.
+implement design chnages
+Shift the World Info button to the top i.e as per the design
+Display the hero stats in a good way , that too quickly,
+A feature for EDit and save , so that text messages by the AI or you can be editied and then be saved to the DB so you can craft the story along your lines
+I think we might have to update the prompts and do some proper prompt engineering as well
+start writing media Queries for it to fit on Phone/mobile
+make it mobile comaptible
+Update the Dungeon Master AI using the react framework , with which the AI decides which APi to call and more...>
+Now change up the Design of the Chat Messages and focus on the UI
+Try and stream the responses of the AI directly to the screen
+
+post the above in prod
+
+plan a quick hero upgrade system and bring in heros and images from stabel DiffusinXL - not needed for now
+Finally the idea is to make it popular enough that many people come to it and use it for fun and building stories
+
+## Lets not comment anything else till the app is functioning atleast at some basic level.
+
+questions curiosities and tasks for today:
+can sveltekit be used to make a game?
+Can memristor change the way we compute can they make transformers very cheap to make
+
+Herding dragons , gettign scales, goblets and more form different types of dragons.
+Some dragons like to be together , some drgaons like to be away , some like being in proximity to fire , some like being in proximity to crystals etc , loads of different ideas in optmizing output of Scales and goblets from each dragon
+
+goblets are different , so goblets are not exeactly what dragons spit out , but i can def make the reference to that in te game that i am making
+
+so we have decided that skills determine class type etc as you level up skills you can get new classes,
+which will give you different amounts of bonuses, chnages , attacks, etc
+
+per new user we need 50 messages = 1000 api calls x 1000 tokens 0.002 usd per 1k tokens
+each message or api call is atleast 5000 tokens so 1 to 2 cent per req message
+so for 50 messages max till payment ~ 1 usd Customer Acquisiton cost = 1 usd , potentially can only do this for a 100 users lol till i go bankrupt , but its a good start nevertheless.
+
+### comments related to the svelte kit file
+
+    lets just do stuff manually instead
+
+what do I want to Display in hero stats => make ti a world List `
+make different Lists to show stuff:
+
+HERO-main => name , level , xp , claas(type)
+hero => stats
+Inventory =>
+Status Effects =>
+Class info => type , bonuses list , skills , or rather skills should take up another thing itself
+Skills =>
+
+Party Members if any below =>
+copy the same format as that of above below
+
+enemies if any list
+Enemy 1=> 1
+enemystats=>
+status effect =>
+
+https://www.reddit.com/r/lostarkgame/comments/urzu5a/smilegate_2020_and_2021_revenue/?rdt=37560
+crazy money from SmileGateMMO called LostArk
+It truly is a unique blend but I would say it's more MMORPG mixed with real-time ARPG style action with MOBA style controls. Confused yet? Well, if I had to compare, I would say it's a bit of TERA mixed with Diablo and a few other titles sprinkled in.
+real time arpg , with moba style contrls
+Can def make a game like this with Indian sub context etc , or maybe something liek Path Of Exile
+
+poe engine ?
+https://massivelyop.com/2020/06/22/not-so-massively-my-top-10-favorite-arpg-classes/
